@@ -2,15 +2,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import folium
 
+# ==============================
 # 1. Load Dataset
-
-df = pd.read_csv("dataset.csv")
+# ==============================
+df = pd.read_csv("Dataset.csv")
 
 print("Dataset Shape:", df.shape)
 
-
+# ==============================
 # 2. Data Cleaning
-
+# ==============================
 print("\nMissing values before cleaning:")
 print(df.isnull().sum())
 
@@ -24,18 +25,18 @@ print(df.isnull().sum())
 print("\nNumber of duplicate rows:", df.duplicated().sum())
 df = df.drop_duplicates()
 
-
+# ==============================
 # 3. Data Overview
-
+# ==============================
 print("\nData Types:")
 print(df.dtypes)
 
 print("\nDataset Info:")
 df.info()
 
-
+# ==============================
 # 4. Target Variable Analysis
-
+# ==============================
 print("\nAggregate Rating Distribution (Count):")
 print(df["Aggregate rating"].value_counts())
 
@@ -45,9 +46,9 @@ print(df["Aggregate rating"].value_counts(normalize=True) * 100)
 # Save cleaned dataset
 df.to_csv("cleaned_dataset.csv", index=False)
 
-
+# ==============================
 # 5. Visualization - Histogram
-
+# ==============================
 plt.figure(figsize=(8, 5))
 plt.hist(df["Aggregate rating"], bins=10)
 
@@ -56,9 +57,9 @@ plt.ylabel("Number of Restaurants")
 plt.title("Distribution of Aggregate Rating")
 plt.grid(True)
 
-
+# ==============================
 # 6. Statistical Analysis
-
+# ==============================
 print("\nStatistical Measures:")
 print(df.describe())
 
@@ -70,9 +71,9 @@ print("Max:", df["Aggregate rating"].max())
 print("Std:", df["Aggregate rating"].std())
 print("Count:", df["Aggregate rating"].count())
 
-
+# ==============================
 # 7. Categorical Analysis
-
+# ==============================
 print("\nCountry Distribution:")
 print(df["Country Code"].value_counts())
 
@@ -85,14 +86,15 @@ print(df["Cuisines"].value_counts().head(10))
 print("\nTop 10 Cities:")
 print(df["City"].value_counts().head(10))
 
+# ==============================
 # 8. Correlation Analysis
-
+# ==============================
 print("\nCorrelation (Location vs Rating):")
 print(df[["Latitude", "Longitude", "Aggregate rating"]].corr())
 
-
+# ==============================
 # 9. Geospatial Analysis (Map)
-
+# ==============================
 map_obj = folium.Map(
     location=[df["Latitude"].mean(), df["Longitude"].mean()],
     zoom_start=5
@@ -107,9 +109,9 @@ for i in range(len(df)):
 map_obj.save("restaurant_map.html")
 print("\nMap saved as restaurant_map.html")
 
-
+# ==============================
 # 10. Table Booking Analysis
-
+# ==============================
 print("\nRestaurants by City:")
 print(df["City"].value_counts().head(10))
 
@@ -123,9 +125,9 @@ print(table_booking_percent)
 print("\nAverage Rating based on Table Booking:")
 print(df.groupby("Has Table booking")["Aggregate rating"].mean())
 
-
+# ==============================
 # 11. Online Delivery Analysis
-
+# ==============================
 online_delivery_percent = df["Has Online delivery"].value_counts(normalize=True) * 100
 print("\nOnline Delivery Percentage:")
 print(online_delivery_percent)
@@ -146,9 +148,9 @@ plt.xlabel("Price Range")
 plt.ylabel("Percentage")
 plt.title("Online Delivery across Price Ranges")
 
-
+# ==============================
 # 12. Price Range Analysis
-
+# ==============================
 print("\nPrice Range Distribution:")
 print(df["Price range"].value_counts())
 
@@ -173,9 +175,9 @@ print("\nPrice range with highest average rating:", max_range)
 color = df[df["Price range"] == max_range]["Rating color"].mode()[0]
 print("Color representing highest rating:", color)
 
-
+# ==============================
 # 13. Feature Engineering
-
+# ==============================
 df["Name Length"] = df["Restaurant Name"].apply(len)
 df["Address Length"] = df["Address"].apply(len)
 
@@ -192,7 +194,7 @@ print(df[[
     "Has Online delivery", "Online Delivery (Encoded)"
 ]].head())
 
-
+# ==============================
 # 14. Show Plots
-
+# ==============================
 plt.show()
